@@ -1,0 +1,70 @@
+
+  {% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% if request.session.user_id %}
+ <style>
+  .bg-color{
+    background-color: F2F2F2;
+  }
+  .bg-color2{
+    background-color: B6B09F;
+  }
+  .textt{
+    color: 000000;
+    font-size: 30px;
+    
+  }
+  .textt2{
+    color: 000000;
+    font-size: 20px;
+  }
+  .bcolor{
+    background-color: 000000;
+    color: F2F2F2;
+    width: 200;
+  }
+  .bcolor:hover {
+    background-color: #333333 !important; 
+    border-color: #333333 !important;
+    color: F2F2F2;
+  } 
+  </style>
+  <body class="bg-color">
+    <div class="container rounded-3 bg-color2 col-4 position-absolute top-50 start-50 translate-middle">
+    <div class="row align-items-center ">
+    
+  {% load static %}
+  <img src="{{ user_custom.picture.url }}" alt="Foto de perfil" class="border border-dark border-3 rounded-circle w-50 h-50 mx-auto mt-3 mb-2">
+    <div class="p-2 d-flex justify-content-center textt">Username: {{ user_custom.userName }}</div>
+    <div class="p-2 d-flex justify-content-center textt">Nombre: {{ user_custom.name}}</div>
+  
+    <div class="d-flex gap-4 mt-3 mb-3">
+    <a href="{% url 'user_app:editar_perfil' %}" class="btn btn-lg bcolor w-100">Editar perfil</a>
+</div>
+<div class="d-flex gap-4 mt-3 mb-3">
+    <a href="{% url 'user_app:change_password' %}" class="btn btn-lg bcolor w-100">Cambiar contraseña</a></div>
+<div class="d-flex gap-4 mt-3 mb-2">
+    
+    <form method="post" action="{% url 'user_app:delete_user' %}" onsubmit="return confirmDelete();" class="w-100">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-lg btn-danger w-100">Borrar Cuenta</button>
+</form>
+</div>
+<div class="d-flex gap-4 mt-3 mb-3">
+    <a href="{% url 'mensaje_app:panel' %}" class="btn btn-lg bcolor w-100">Volver</a>
+</div>
+    
+  </div>
+</div>
+<script>
+  function confirmDelete() {
+    return confirm("¿Estás seguro de que deseas borrar tu cuenta? Esta acción no se puede deshacer.");
+  }
+</script>
+
+  </body>
+{% else %}
+  {% include 'home/nologeduser.html' %}
+{% endif %}

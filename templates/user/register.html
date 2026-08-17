@@ -1,0 +1,93 @@
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+ <style>
+  .bg-color{
+    background-color: F2F2F2;
+  }
+  .bg-color2{
+    background-color: B6B09F;
+  }
+  .textt{
+    color: 000000;
+    font-size: 30px;
+    
+  }
+  .textt2{
+    color: 000000;
+    font-size: 20px;
+  }
+  .bcolor{
+    background-color: 000000;
+    color: F2F2F2;
+    width: 200;
+  }
+  .bcolor:hover {
+    background-color: #333333 !important; 
+    border-color: #333333 !important;
+    color: F2F2F2;
+  } 
+  </style>
+  <body class="bg-color">
+
+ 
+
+{% if request.session.user_id %}
+{% include 'home/logeduser.html'%}  
+{% else %}
+<div class="container rounded-3 bg-color2 col-4 position-absolute top-50 start-50 translate-middle" 
+style="max-height: 90vh; overflow-y: auto;">
+  <div class="row align-items-center ">
+    <div >
+      <div class="p-2 d-flex justify-content-center textt">Registrese</div>
+      <div>
+        <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label class="p-2 d-flex justify-content-center textt2">Nombre:</label>
+    <div class="p-2 d-flex justify-content-center">{{form.name}}
+    </div>
+    <small class="p-2 d-flex justify-content-center text-danger">{{ form.name.errors }}</small>
+
+    <label class="p-2 d-flex justify-content-center textt2">Username:</label>
+    <div class="p-2 d-flex justify-content-center">{{ form.userName }}
+    </div>
+    <small class="p-2 d-flex justify-content-center text-danger">{{ form.userName.errors }}</small>
+
+    <label class="p-2 d-flex justify-content-center textt2">Email:</label>
+    <div class="p-2 d-flex justify-content-center">{{ form.email }}
+    </div>
+    <small class="p-2 d-flex justify-content-center text-danger">{{form.email.errors}}</small>
+
+    <label class="p-2 d-flex justify-content-center textt2">Foto de perfil(opcional):</label>
+    <div class="p-2 d-flex justify-content-center">{{ form.picture  }}
+    </div>
+    <small class="p-2 d-flex justify-content-center text-danger">{{ form.picture.errors }}</small>
+
+    <label class="p-2 d-flex justify-content-center textt2">Contraseña:</label>
+    <div class="p-2 d-flex justify-content-center">{{ form.password1 }}
+    </div>
+    <small class="p-2 d-flex justify-content-center text-danger">{{ form.password1.errors }}</small>
+
+    <label class="p-2 d-flex justify-content-center textt2">Confirmar contraseña:</label>
+    <div class="p-2 d-flex justify-content-center">{{ form.password2 }}
+    </div>
+    <small class="p-2 d-flex justify-content-center text-danger">{{ form.password2.errors }}</small>
+    
+  <div class="d-flex gap-3 mt-3">
+    <button type="submit" class="btn btn-lg bcolor">Registrarse</button>
+    <a href="{% url 'user_app:login' %}" class="btn btn-lg bcolor">Login</a>
+  </div>
+      
+  </form>
+
+
+</div>
+    </div>
+  </div>
+</div>
+
+  
+{% endif %}
+ </body>

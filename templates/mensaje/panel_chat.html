@@ -1,0 +1,200 @@
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+ <style>
+  .bg-color{
+    background-color: F2F2F2;
+  }
+  .bg-color2{
+    background-color: B6B09F;
+  }
+  .textt{
+    color: 000000;
+    font-size: 30px;
+    
+  }
+  .textt2{
+    color: 000000;
+    font-size: 20px;
+  }
+  .bcolor{
+    background-color: 000000;
+    color: F2F2F2;
+    width: 200;
+  }
+  .bcolor:hover {
+    background-color: #333333 !important; 
+    border-color: #333333 !important;
+    color: F2F2F2;
+  } 
+
+ </style>
+<body class="bg-color">
+{% if request.session.user_id %}
+
+<nav class="navbar navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="">
+      {% load static %}
+      <img src="/media/Logo/ChaTeo.png" alt="Logo" width="50" height="50">
+    </a>
+    <li class="nav-item dropdown text-light">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" 
+          data-bs-toggle="dropdown" aria-expanded="false">
+            {{ user_custom.userName }}
+            <img src="{{ user_custom.picture.url }}" alt="Logo" width="30" height="30" class="border border-light border-3 rounded-circle">
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+            <li><a class="dropdown-item" href="{% url 'user_app:miporfile' %}">Mi perfil</a></li>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'user_app:logout' %}">Cerrar cuenta</a></li>
+          </ul>
+        </li>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-4">
+      <h4>Mis chats</h4>
+      <ul class="list-group">
+        {% for c in chats %}
+
+        {% if c.user_idA.id == user_custom.id %}
+            {% if c.is_visibleA %}
+            <a href="{% url 'mensaje_app:panel_chat' c.id %}" class="link-underline link-underline-opacity-0">
+          <li class="list-group-item">
+            
+              <img src="{{ c.user_idB.picture.url }}" alt="Logo" width="30" height="30" class="border border-light border-3 rounded-circle">
+              {{ c.user_idB.userName }}
+            <br>
+            {% if c.last_message_date %}
+              <small>Último mensaje: {{ c.last_message_date|date:"d/m/Y H:i" }}</small>
+            {% else %}
+              <small>No hay mensajes aún</small>
+            {% endif %}
+            <br>
+            {% if c.user_idB.isActive %}
+              <small class="text-success">Activo</small>
+            {% else %}
+              <small>Activo por ultima vez {{ c.user_idB.LastSignDate|date:"d/m/Y H:i" }}</small>
+            {% endif %}
+          
+          </a>
+          <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" 
+          data-bs-toggle="dropdown" aria-expanded="false" style="width: 30px; height: 30px; padding: 0;">
+           ⋮
+           </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-archive"></i>Ver perfil</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash"></i>Bloquear</a></li>
+
+            <li><hr class="dropdown-divider"></li>
+           <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash"></i>Eliminar mensajes</a></li> 
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash"></i>Eliminar chat</a></li>
+          </ul>
+          </li>
+           
+          {% endif %}
+          {% else %} 
+
+              {%  if c.is_visibleb %}
+          <a href="{% url 'mensaje_app:panel_chat' c.id %}" class="link-underline link-underline-opacity-0">      
+          <li class="list-group-item">
+            <img src="{{ c.user_idA.picture.url }}" alt="Logo" width="30" height="30" class="border border-light border-3 rounded-circle">
+            {{ c.user_idA.userName }}
+            
+              
+            <br>
+            {% if c.last_message_date %}
+              <small>Último mensaje: {{ c.last_message_date|date:"d/m/Y H:i" }}</small>
+            {% else %}
+              <small>No hay mensajes aún</small>
+            {% endif %}
+            <br>
+            {% if c.user_idA.isActive %}
+              <small class="text-success">Activo</small>
+            {% else %}
+              <small>Activo por ultima vez {{ c.user_idA.LastSignDate|date:"d/m/Y H:i" }}</small>
+            {% endif %}
+          </a>
+          <button class="btn btn-sm btn-outline-secondary rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 30px; height: 30px; padding: 0;">
+           ⋮
+           </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-archive"></i>Ver perfil</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-bell-slash"></i>Bloquear</a></li>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash"></i>Eliminar mensajes</a></li>
+          <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash"></i>Eliminar chat</a></li>
+          </ul>
+          </li>
+
+          </li>
+          {% endif %}
+          {% endif %}
+          
+        {% endfor %}
+      </ul>
+
+      <a href="{% url 'user_chats:new_chat' %}" 
+      class="btn btn-success rounded-circle position-fixed d-flex align-items-center justify-content-center text-decoration-none" 
+      style="bottom: 30px; left: 25%; width: 60px; height: 60px; font-size: 24px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+ +
+</a>
+    </div>
+
+   
+    <div class="col-md-8 border-start">
+      {% if chat %}
+        <h4>Chat con 
+          {% if chat.user_idA.id == user_custom.id %}
+              {{ chat.user_idB.userName }}
+          {% else %}
+              {{ chat.user_idA.userName }}
+          {% endif %}
+        </h4>
+
+        <ul class="list-group">
+          {% for m in mensajes %}
+            {% if m.is_visibleA or m.is_visibleb %}
+            <li class="list-group-item">
+              <strong>{{ m.user_id.name }}:</strong> {{ m.content }}
+              <br><small>{{ m.sendDate }}</small>
+              {% if m.is_read%}
+              <small class="text-primary">Visto</small>
+              {% else %}
+              <small class="text-secondary">enviado</small>
+              {% endif %}
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        {% if can_send_message %}
+        <form method="post" action="{% url 'mensaje_app:send_mensaje' chat.id %}" class="mt-2">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        {% else %}
+        <p class="text-danger mt-2">No puedes enviar mensajes a este usuario.</p>
+        {% endif %}
+
+      {% else %}
+        <p class="text-muted">Selecciona un chat para ver los mensajes</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% else %}
+  {% include 'home/nologeduser.html' %}
+{% endif %}
+
+  
+</body>

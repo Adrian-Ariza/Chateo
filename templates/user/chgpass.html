@@ -1,0 +1,74 @@
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+ <style>
+  .bg-color{
+    background-color: F2F2F2;
+  }
+  .bg-color2{
+    background-color: B6B09F;
+  }
+  .textt{
+    color: 000000;
+    font-size: 30px;
+    
+  }
+  .textt2{
+    color: 000000;
+    font-size: 20px;
+  }
+  .bcolor{
+    background-color: 000000;
+    color: F2F2F2;
+    width: 200;
+  }
+  .bcolor:hover {
+    background-color: #333333 !important; 
+    border-color: #333333 !important;
+    color: F2F2F2;
+  } 
+
+ </style>
+<body class="bg-color">
+
+</form>
+{% if request.session.user_id %}
+ <div class="container rounded-3 bg-color2 col-4 position-absolute top-50 start-50 translate-middle">
+  <div class="row align-items-center  ">
+    <div>
+      <div class="p-2 d-flex justify-content-center textt">Cambiar contraseña</div>
+      <div>
+        <form  method="post">
+    {% csrf_token %}
+    <label class="p-2 d-flex justify-content-center textt2">Contraseña Actual</label>
+    <div class="p-2 d-flex justify-content-center">{{form.current_password}}
+    </div>
+    <label class="p-2 d-flex justify-content-center textt2">Contraseña Nueva</label>
+    <div class="p-2 d-flex justify-content-center">{{form.new_password}}
+    </div>
+     <label class="p-2 d-flex justify-content-center textt2">Confirmar Contraseña</label>
+    <div class="p-2 d-flex justify-content-center">{{form.confirm_password}}
+    </div>
+    {% if form.errors %}
+                <div class="text-danger p-2 d-flex justify-content-center">
+                  {{form.errors}}
+                </div>
+    {% endif %}
+
+    <div class="d-flex gap-3 mt-3">
+    <button type="submit" class="btn btn-lg bcolor">Actualizar</button>
+    <a href="{% url 'user_app:miporfile' %}" class="btn btn-lg bcolor">Volver</a>
+  </div>
+      
+  </form>
+
+
+    </div>
+  </div>
+{%else%}
+{% include 'home/nologeduser.html' %}
+{% endif %}
+</body>

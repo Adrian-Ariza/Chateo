@@ -1,0 +1,8 @@
+
+{% if request.session.user_id %}
+  {% include 'home/logeduser.html'%}
+  
+{% else %}
+
+{% include 'home/nologeduser.html'%}
+{% endif %}
